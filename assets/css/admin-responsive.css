@@ -1,0 +1,262 @@
+/* Responsive Styles for SIPANDAI Admin Dashboard */
+
+/* Large Devices */
+@media (max-width: 1200px) {
+    .module-card {
+        max-width: calc(50% - 20px);
+    }
+    
+    .stats-card {
+        min-width: 180px;
+    }
+}
+
+/* Medium Devices */
+@media (max-width: 992px) {
+    .admin-topbar {
+        left: 0;
+        padding-left: 80px;
+    }
+    
+    .admin-sidebar {
+        width: 80px;
+        overflow: visible;
+    }
+    
+    .admin-content {
+        margin-left: 80px;
+    }
+    
+    .sidebar-header h3,
+    .user-info,
+    .sidebar-link span:not(.sidebar-icon),
+    .sidebar-footer {
+        display: none;
+    }
+    
+    .sidebar-header {
+        justify-content: center;
+        padding: 1rem 0;
+    }
+    
+    .sidebar-logo {
+        margin-right: 0;
+    }
+    
+    .user-avatar {
+        margin-right: 0;
+    }
+    
+    .sidebar-user {
+        justify-content: center;
+        padding: 1rem 0;
+    }
+    
+    .sidebar-link {
+        justify-content: center;
+        padding: 0.75rem 0;
+    }
+    
+    .sidebar-icon {
+        margin-right: 0;
+        font-size: 1.5rem;
+    }
+    
+    .admin-sidebar:hover {
+        width: var(--sidebar-width);
+        z-index: 1000;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .admin-sidebar:hover .sidebar-header h3,
+    .admin-sidebar:hover .user-info,
+    .admin-sidebar:hover .sidebar-link span:not(.sidebar-icon),
+    .admin-sidebar:hover .sidebar-footer {
+        display: block;
+    }
+    
+    .admin-sidebar:hover .sidebar-header {
+        justify-content: flex-start;
+        padding: 1.5rem 1rem;
+    }
+    
+    .admin-sidebar:hover .sidebar-logo {
+        margin-right: 0.5rem;
+    }
+    
+    .admin-sidebar:hover .user-avatar {
+        margin-right: 0.5rem;
+    }
+    
+    .admin-sidebar:hover .sidebar-user {
+        justify-content: flex-start;
+        padding: 1rem;
+    }
+    
+    .admin-sidebar:hover .sidebar-link {
+        justify-content: flex-start;
+        padding: 0.75rem 1rem;
+    }
+    
+    .admin-sidebar:hover .sidebar-icon {
+        margin-right: 0.75rem;
+        font-size: 1.2rem;
+    }
+    
+    .charts-container {
+        flex-direction: column;
+    }
+    
+    .chart-card {
+        width: 100%;
+    }
+    
+    .recent-data-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Small Devices */
+@media (max-width: 768px) {
+    .admin-sidebar {
+        transform: translateX(-100%);
+        width: var(--sidebar-width);
+        z-index: 1000;
+    }
+    
+    .admin-sidebar.show {
+        transform: translateX(0);
+    }
+    
+    .admin-content,
+    .admin-topbar {
+        margin-left: 0;
+        left: 0;
+    }
+    
+    .menu-toggle {
+        display: flex;
+    }
+    
+    .close-sidebar {
+        display: block;
+    }
+    
+    .sidebar-header h3,
+    .user-info,
+    .sidebar-link span:not(.sidebar-icon),
+    .sidebar-footer {
+        display: block;
+    }
+    
+    .sidebar-header {
+        justify-content: flex-start;
+        padding: 1.5rem 1rem;
+    }
+    
+    .sidebar-logo {
+        margin-right: 0.5rem;
+    }
+    
+    .user-avatar {
+        margin-right: 0.5rem;
+    }
+    
+    .sidebar-user {
+        justify-content: flex-start;
+        padding: 1rem;
+    }
+    
+    .sidebar-link {
+        justify-content: flex-start;
+        padding: 0.75rem 1rem;
+    }
+    
+    .sidebar-icon {
+        margin-right: 0.75rem;
+        font-size: 1.2rem;
+    }
+    
+    .stats-row {
+        flex-direction: column;
+    }
+    
+    .stats-card {
+        width: 100%;
+    }
+    
+    .module-card {
+        max-width: 100%;
+    }
+    
+    .dropdown-content {
+        width: 280px;
+    }
+    
+    .admin-table th,
+    .admin-table td {
+        padding: 0.5rem;
+    }
+    
+    .topbar-right {
+        margin-left: auto;
+    }
+    
+    .date-info {
+        display: none;
+    }
+    
+    .user-name {
+        max-width: 80px;
+    }
+}
+
+/* Extra Small Devices */
+@media (max-width: 576px) {
+    .admin-topbar {
+        padding: 0 1rem;
+    }
+    
+    .admin-content {
+        padding: calc(var(--topbar-height) + 10px) 10px 10px 10px;
+    }
+    
+    .stats-container,
+    .charts-container,
+    .data-card,
+    .modules-container {
+        margin-bottom: 1rem;
+    }
+    
+    .dropdown-content {
+        width: 240px;
+        right: -70px;
+    }
+    
+    .dropdown-content::before {
+        right: 82px;
+    }
+    
+    .module-card,
+    .stats-card,
+    .chart-card {
+        padding: 1rem;
+    }
+    
+    .admin-table th:nth-child(5),
+    .admin-table td:nth-child(5) {
+        display: none;
+    }
+    
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+        margin: 5% auto;
+    }
+    
+    .toast {
+        width: 90%;
+        left: 5%;
+        right: 5%;
+    }
+}

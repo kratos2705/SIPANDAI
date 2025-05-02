@@ -1,0 +1,248 @@
+-- Tabel Users (Pengguna Sistem)
+CREATE TABLE users (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    nik VARCHAR(16) UNIQUE,
+    nama VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    alamat TEXT,
+    nomor_telepon VARCHAR(15),
+    tanggal_lahir DATE,
+    jenis_kelamin ENUM('Laki-laki', 'Perempuan'),
+    role ENUM('admin', 'kepala_desa', 'warga') NOT NULL,
+    foto_profil VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    active BOOLEAN DEFAULT TRUE
+);
+
+-- Tabel Jenis Dokumen
+CREATE TABLE jenis_dokumen (
+    jenis_id INT PRIMARY KEY AUTO_INCREMENT,
+    nama_dokumen VARCHAR(100) NOT NULL,
+    deskripsi TEXT,
+    persyaratan TEXT,
+    estimasi_waktu INT, -- dalam hari
+    biaya DECIMAL(10, 2),
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+-- Tabel Pengajuan Dokumen
+CREATE TABLE pengajuan_dokumen (
+    pengajuan_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    jenis_id INT,
+    nomor_pengajuan VARCHAR(50) UNIQUE,
+    tanggal_pengajuan TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('diajukan', 'verifikasi', 'proses', 'selesai', 'ditolak') DEFAULT 'diajukan',
+    catatan TEXT,
+    tanggal_selesai TIMESTAMP NULL,
+    dokumen_hasil VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (jenis_id) REFERENCES jenis_dokumen(jenis_id)
+);
+
+-- Tabel Dokumen Persyaratan (untuk file yang diunggah)
+CREATE TABLE dokumen_persyaratan (
+    persyaratan_id INT PRIMARY KEY AUTO_INCREMENT,
+    pengajuan_id INT,
+    nama_file VARCHAR(255) NOT NULL,
+    path_file VARCHAR(255) NOT NULL,
+    tanggal_upload TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    jenis_persyaratan VARCHAR(100),
+    FOREIGN KEY (pengajuan_id) REFERENCES pengajuan_dokumen(pengajuan_id) ON DELETE CASCADE
+);
+
+-- Tabel Riwayat Status Pengajuan
+CREATE TABLE riwayat_pengajuan (
+    riwayat_id INT PRIMARY KEY AUTO_INCREMENT,
+    pengajuan_id INT,
+    status ENUM('diajukan', 'verifikasi', 'proses', 'selesai', 'ditolak'),
+    catatan TEXT,
+    changed_by INT, -- ID user yang mengubah status
+    tanggal_perubahan TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (pengajuan_id) REFERENCES pengajuan_dokumen(pengajuan_id) ON DELETE CASCADE,
+    FOREIGN KEY (changed_by) REFERENCES users(user_id)
+);
+
+-- Tabel Anggaran Desa
+CREATE TABLE anggaran_desa (
+    anggaran_id INT PRIMARY KEY AUTO_INCREMENT,
+    tahun_anggaran YEAR NOT NULL,
+    periode ENUM('tahunan', 'semester1', 'semester2', 'triwulan1', 'triwulan2', 'triwulan3', 'triwulan4') NOT NULL,
+    total_anggaran DECIMAL(15, 2) NOT NULL,
+    status ENUM('rencana', 'disetujui', 'realisasi', 'laporan_akhir') DEFAULT 'rencana',
+    dokumen_anggaran VARCHAR(255),
+    created_by INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (created_by) REFERENCES users(user_id)
+);
+
+-- Tabel Detail Anggaran
+CREATE TABLE detail_anggaran (
+    detail_id INT PRIMARY KEY AUTO_INCREMENT,
+    anggaran_id INT,
+    kategori VARCHAR(100) NOT NULL,
+    sub_kategori VARCHAR(100),
+    uraian TEXT NOT NULL,
+    jumlah_anggaran DECIMAL(15, 2) NOT NULL,
+    jumlah_realisasi DECIMAL(15, 2) DEFAULT 0,
+    keterangan TEXT,
+    FOREIGN KEY (anggaran_id) REFERENCES anggaran_desa(anggaran_id) ON DELETE CASCADE
+);
+
+-- Tabel Realisasi Anggaran
+CREATE TABLE realisasi_anggaran (
+    realisasi_id INT PRIMARY KEY AUTO_INCREMENT,
+    detail_id INT,
+    tanggal_realisasi DATE NOT NULL,
+    jumlah DECIMAL(15, 2) NOT NULL,
+    bukti_dokumen VARCHAR(255),
+    keterangan TEXT,
+    created_by INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (detail_id) REFERENCES detail_anggaran(detail_id) ON DELETE CASCADE,
+    FOREIGN KEY (created_by) REFERENCES users(user_id)
+);
+
+-- Tabel Berita dan Pengumuman
+CREATE TABLE berita (
+    berita_id INT PRIMARY KEY AUTO_INCREMENT,
+    judul VARCHAR(255) NOT NULL,
+    konten TEXT NOT NULL,
+    thumbnail VARCHAR(255),
+    kategori VARCHAR(100),
+    tag VARCHAR(255),
+    status ENUM('draft', 'published', 'archived') DEFAULT 'draft',
+    tanggal_publikasi TIMESTAMP NULL,
+    created_by INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    view_count INT DEFAULT 0,
+    FOREIGN KEY (created_by) REFERENCES users(user_id)
+);
+
+-- Tabel Komentar Berita
+CREATE TABLE komentar_berita (
+    komentar_id INT PRIMARY KEY AUTO_INCREMENT,
+    berita_id INT,
+    user_id INT,
+    komentar TEXT NOT NULL,
+    tanggal_komentar TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+    FOREIGN KEY (berita_id) REFERENCES berita(berita_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- Tabel Lampiran Berita
+CREATE TABLE lampiran_berita (
+    lampiran_id INT PRIMARY KEY AUTO_INCREMENT,
+    berita_id INT,
+    judul VARCHAR(255),
+    jenis_file VARCHAR(50),
+    path_file VARCHAR(255) NOT NULL,
+    ukuran INT, -- dalam KB
+    tanggal_upload TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (berita_id) REFERENCES berita(berita_id) ON DELETE CASCADE
+);
+
+-- Tabel Laporan Administrasi
+CREATE TABLE laporan_administrasi (
+    laporan_id INT PRIMARY KEY AUTO_INCREMENT,
+    jenis_laporan ENUM('layanan', 'performa', 'keuangan', 'demografi', 'kegiatan') NOT NULL,
+    judul VARCHAR(255) NOT NULL,
+    periode_awal DATE NOT NULL,
+    periode_akhir DATE NOT NULL,
+    format VARCHAR(50),
+    path_file VARCHAR(255),
+    created_by INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    catatan TEXT,
+    FOREIGN KEY (created_by) REFERENCES users(user_id)
+);
+
+-- Tabel Data Demografi
+CREATE TABLE data_demografi (
+    demografi_id INT PRIMARY KEY AUTO_INCREMENT,
+    tahun YEAR NOT NULL,
+    bulan TINYINT,
+    total_penduduk INT,
+    total_kk INT,
+    laki_laki INT,
+    perempuan INT,
+    balita INT,
+    anak INT,
+    remaja INT,
+    dewasa INT,
+    lansia INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Tabel Retribusi
+CREATE TABLE jenis_retribusi (
+    jenis_retribusi_id INT PRIMARY KEY AUTO_INCREMENT,
+    nama_retribusi VARCHAR(100) NOT NULL,
+    deskripsi TEXT,
+    nominal DECIMAL(10, 2) NOT NULL,
+    periode ENUM('bulanan', 'tahunan', 'insidentil') DEFAULT 'bulanan',
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+-- Tabel Tagihan Retribusi
+CREATE TABLE tagihan_retribusi (
+    tagihan_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    jenis_retribusi_id INT,
+    tanggal_tagihan DATE NOT NULL,
+    jatuh_tempo DATE NOT NULL,
+    nominal DECIMAL(10, 2) NOT NULL,
+    status ENUM('belum_bayar', 'proses', 'lunas', 'telat') DEFAULT 'belum_bayar',
+    denda DECIMAL(10, 2) DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (jenis_retribusi_id) REFERENCES jenis_retribusi(jenis_retribusi_id)
+);
+
+-- Tabel Pembayaran Retribusi
+CREATE TABLE pembayaran_retribusi (
+    pembayaran_id INT PRIMARY KEY AUTO_INCREMENT,
+    tagihan_id INT,
+    tanggal_bayar TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    jumlah_bayar DECIMAL(10, 2) NOT NULL,
+    metode_pembayaran VARCHAR(50),
+    bukti_pembayaran VARCHAR(255),
+    nomor_referensi VARCHAR(100),
+    status ENUM('pending', 'berhasil', 'gagal') DEFAULT 'pending',
+    catatan TEXT,
+    confirmed_by INT NULL,
+    confirmed_at TIMESTAMP NULL,
+    FOREIGN KEY (tagihan_id) REFERENCES tagihan_retribusi(tagihan_id),
+    FOREIGN KEY (confirmed_by) REFERENCES users(user_id)
+);
+
+-- Tabel Notifikasi
+CREATE TABLE notifikasi (
+    notifikasi_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    judul VARCHAR(255) NOT NULL,
+    pesan TEXT NOT NULL,
+    jenis VARCHAR(50),
+    link VARCHAR(255),
+    is_read BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- Tabel Log Aktivitas
+CREATE TABLE log_aktivitas (
+    log_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    aktivitas VARCHAR(255) NOT NULL,
+    deskripsi TEXT,
+    ip_address VARCHAR(50),
+    user_agent TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
