@@ -42,6 +42,49 @@ if (strpos($_SERVER['PHP_SELF'], 'user/') !== false) {
 } elseif (strpos($_SERVER['PHP_SELF'], 'auth/') !== false) {
     $base_path = '../';
 }
+
+// Sistem notifikasi - dapatkan pesan dari session
+$notification = [
+    'show' => false,
+    'message' => '',
+    'type' => 'success'
+];
+
+// Check for notification messages in session
+$notification_types = [
+    'success' => ['login_success', 'register_success', 'logout_success', 'form_success', 'update_success', 'delete_success'],
+    'error' => ['login_error', 'register_error', 'form_error', 'update_error', 'delete_error'],
+    'info' => ['info_message']
+];
+
+foreach ($notification_types as $type => $keys) {
+    foreach ($keys as $key) {
+        if (isset($_SESSION[$key])) {
+            $notification = [
+                'show' => true,
+                'message' => $_SESSION[$key],
+                'type' => $type
+            ];
+            unset($_SESSION[$key]);
+            break 2; // Exit both loops once we find a notification
+        }
+    }
+}
+
+// Handle register errors array
+if (isset($_SESSION['register_errors']) && !empty($_SESSION['register_errors'])) {
+    $error_msg = '';
+    foreach ($_SESSION['register_errors'] as $error) {
+        $error_msg .= $error . '<br>';
+    }
+    $notification = [
+        'show' => true,
+        'message' => $error_msg,
+        'type' => 'error'
+    ];
+    unset($_SESSION['register_errors']);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -59,7 +102,94 @@ if (strpos($_SERVER['PHP_SELF'], 'user/') !== false) {
     <link href="<?php echo $base_path; ?>assets/css/styles6.css" rel="stylesheet" />
     <link href="<?php echo $base_path; ?>assets/css/alert.css" rel="stylesheet" />
     <link href="<?php echo $base_path; ?>assets/css/user-buttons.css" rel="stylesheet" />
-    <script src="<?php echo $base_path; ?>assets/js/navigation.js" defer></script>
+    
+    <style>
+    /* Notification Popup Styles */
+    .notification-popup {
+        display: none;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        min-width: 300px;
+        max-width: 400px;
+        background-color: white;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .notification-popup.show {
+        display: block;
+        animation: slideIn 0.5s forwards;
+    }
+    
+    .notification-content {
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+    }
+    
+    .notification-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 18px;
+        color: #999;
+        cursor: pointer;
+    }
+    
+    #notificationIcon {
+        margin-right: 15px;
+        font-size: 24px;
+        width: 30px;
+        text-align: center;
+    }
+    
+    #notificationMessage {
+        flex: 1;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    
+    .notification-success {
+        border-left: 4px solid #28a745;
+    }
+    
+    .notification-success #notificationIcon::before {
+        content: "✓";
+        color: #28a745;
+    }
+    
+    .notification-error {
+        border-left: 4px solid #dc3545;
+    }
+    
+    .notification-error #notificationIcon::before {
+        content: "✕";
+        color: #dc3545;
+    }
+    
+    .notification-info {
+        border-left: 4px solid #17a2b8;
+    }
+    
+    .notification-info #notificationIcon::before {
+        content: "ℹ";
+        color: #17a2b8;
+    }
+    
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+    </style>
 </head>
 
 <body>
@@ -128,20 +258,6 @@ if (strpos($_SERVER['PHP_SELF'], 'user/') !== false) {
             <!-- Login Form -->
             <div class="form-container active" id="loginForm">
                 <form action="<?php echo $base_path; ?>auth/proses_login.php" method="POST">
-                    <?php if (isset($_SESSION['login_error'])): ?>
-                        <div class="alert alert-danger">
-                            <?php echo $_SESSION['login_error']; ?>
-                        </div>
-                        <?php unset($_SESSION['login_error']); ?>
-                    <?php endif; ?>
-
-                    <?php if (isset($_SESSION['register_success'])): ?>
-                        <div class="alert alert-success">
-                            <?php echo $_SESSION['register_success']; ?>
-                        </div>
-                        <?php unset($_SESSION['register_success']); ?>
-                    <?php endif; ?>
-
                     <div class="form-group">
                         <label for="loginEmail">Email atau Nomor HP</label>
                         <input type="text" class="form-control" id="loginEmail" name="loginEmail" required>
@@ -164,19 +280,8 @@ if (strpos($_SERVER['PHP_SELF'], 'user/') !== false) {
             <!-- Register Form -->
             <div class="form-container" id="registerForm">
                 <form action="<?php echo $base_path; ?>auth/proses_register.php" method="POST">
-                    <?php if (isset($_SESSION['register_errors'])): ?>
-                        <div class="alert alert-danger">
-                            <ul>
-                                <?php foreach ($_SESSION['register_errors'] as $error): ?>
-                                    <li><?php echo $error; ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
-                        <?php unset($_SESSION['register_errors']); ?>
-                    <?php endif; ?>
-
                     <?php 
-                    // Get saved registration data if exists
+
                     $register_data = isset($_SESSION['register_data']) ? $_SESSION['register_data'] : [
                         'nama' => '',
                         'nik' => '',
@@ -223,139 +328,102 @@ if (strpos($_SERVER['PHP_SELF'], 'user/') !== false) {
         </div>
     </div>
 
-    <!-- Login/Logout Notification Popup -->
-<div id="notificationPopup" class="notification-popup">
-    <div class="notification-content">
-        <span class="notification-close">&times;</span>
-        <div id="notificationIcon"></div>
-        <div id="notificationMessage"></div>
+    <!-- Notification Popup -->
+    <div id="notificationPopup" class="notification-popup">
+        <div class="notification-content">
+            <span class="notification-close">&times;</span>
+            <div id="notificationIcon"></div>
+            <div id="notificationMessage"></div>
+        </div>
     </div>
-</div>
 
-<style>
-/* Notification Popup Styles */
-.notification-popup {
-    display: none;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-    min-width: 300px;
-    max-width: 400px;
-    background-color: white;
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.notification-popup.show {
-    display: block;
-    animation: slideIn 0.5s forwards;
-}
-
-.notification-content {
-    display: flex;
-    align-items: center;
-    padding: 15px 20px;
-}
-
-.notification-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 18px;
-    color: #999;
-    cursor: pointer;
-}
-
-#notificationIcon {
-    margin-right: 15px;
-    font-size: 24px;
-}
-
-#notificationMessage {
-    flex: 1;
-    font-size: 14px;
-}
-
-.notification-success {
-    border-left: 4px solid #28a745;
-}
-
-.notification-success #notificationIcon::before {
-    content: "✓";
-    color: #28a745;
-}
-
-.notification-error {
-    border-left: 4px solid #dc3545;
-}
-
-.notification-error #notificationIcon::before {
-    content: "✕";
-    color: #dc3545;
-}
-
-@keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes slideOut {
-    from { transform: translateX(0); opacity: 1; }
-    to { transform: translateX(100%); opacity: 0; }
-}
-</style>
-
-<script>
-// Notification Popup JavaScript
-document.addEventListener('DOMContentLoaded', function() {
-    // Check for login/logout messages in session
-    <?php if (isset($_SESSION['login_success'])): ?>
-        showNotification('<?php echo $_SESSION['login_success']; ?>', 'success');
-        <?php unset($_SESSION['login_success']); ?>
-    <?php endif; ?>
-    
-    <?php if (isset($_SESSION['login_error'])): ?>
-        showNotification('<?php echo $_SESSION['login_error']; ?>', 'error');
-        <?php unset($_SESSION['login_error']); ?>
-    <?php endif; ?>
-    
-    <?php if (isset($_SESSION['logout_success'])): ?>
-        showNotification('<?php echo $_SESSION['logout_success']; ?>', 'success');
-        <?php unset($_SESSION['logout_success']); ?>
-    <?php endif; ?>
-    
-    // Close button functionality
-    const closeBtn = document.querySelector('.notification-close');
-    if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
-            hideNotification();
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // User dropdown menu
+        
+        
+        // Login modal
+        const loginBtn = document.getElementById('loginBtn');
+        const loginModal = document.getElementById('loginModal');
+        const closeModal = document.getElementById('closeModal');
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        
+        if (loginBtn) {
+            loginBtn.addEventListener('click', function() {
+                loginModal.style.display = 'block';
+            });
+        }
+        
+        if (closeModal) {
+            closeModal.addEventListener('click', function() {
+                loginModal.style.display = 'none';
+            });
+        }
+        
+        if (loginTab && registerTab) {
+            loginTab.addEventListener('click', function() {
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+            });
+            
+            registerTab.addEventListener('click', function() {
+                registerTab.classList.add('active');
+                loginTab.classList.remove('active');
+                registerForm.classList.add('active');
+                loginForm.classList.remove('active');
+            });
+        }
+        
+        // Close the modal when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target == loginModal) {
+                loginModal.style.display = 'none';
+            }
         });
+        
+        // Show notification if available
+        <?php if ($notification['show']): ?>
+            showNotification('<?php echo addslashes(str_replace(array("\r", "\n"), '', $notification['message'])); ?>', '<?php echo $notification['type']; ?>');
+        <?php endif; ?>
+        
+        // Notification popup close button
+        const notificationClose = document.querySelector('.notification-close');
+        if (notificationClose) {
+            notificationClose.addEventListener('click', function() {
+                hideNotification();
+            });
+        }
+    });
+
+    function showNotification(message, type) {
+        const popup = document.getElementById('notificationPopup');
+        const messageEl = document.getElementById('notificationMessage');
+        
+        if (!popup || !messageEl) return;
+        
+        // Set message and type
+        messageEl.innerHTML = message;
+        popup.className = 'notification-popup notification-' + type + ' show';
+        
+        // Auto hide after 5 seconds
+        setTimeout(hideNotification, 5000);
     }
-});
 
-function showNotification(message, type) {
-    const popup = document.getElementById('notificationPopup');
-    const messageEl = document.getElementById('notificationMessage');
-    
-    // Set message and type
-    messageEl.textContent = message;
-    popup.className = 'notification-popup notification-' + type + ' show';
-    
-    // Auto hide after 5 seconds
-    setTimeout(hideNotification, 5000);
-}
-
-function hideNotification() {
-    const popup = document.getElementById('notificationPopup');
-    popup.style.animation = 'slideOut 0.5s forwards';
-    
-    // Remove the element from DOM after animation completes
-    setTimeout(function() {
-        popup.className = 'notification-popup';
-        popup.style.animation = '';
-    }, 500);
-}
-</script>
+    function hideNotification() {
+        const popup = document.getElementById('notificationPopup');
+        if (!popup) return;
+        
+        popup.style.animation = 'slideOut 0.5s forwards';
+        
+        // Remove the element from DOM after animation completes
+        setTimeout(function() {
+            popup.className = 'notification-popup';
+            popup.style.animation = '';
+        }, 500);
+    }
+    </script>

@@ -385,7 +385,7 @@ include $base_path . 'includes/header.php';
                         <input type="radio" id="bank-transfer" name="payment_method" value="transfer_bank" checked>
                         <label for="bank-transfer">
                             Transfer Bank
-                            <img src="<?php echo $base_path; ?>assets/img/bank-icons.png" alt="Bank Icons">
+                            <img src="<?php echo $base_path; ?>assets/img/bank-iconss.png" alt="Bank Icons">
                         </label>
                     </div>
 
@@ -737,628 +737,662 @@ include $base_path . 'includes/header.php';
 </script>
 
 <style>
-    /* Variables */
-:root {
-    --primary: #2E7D32;
-    --secondary: #4CAF50;
-    --light: #E8F5E9;
-    --dark: #1B5E20;
-    --accent: #FF9800;
-    --text-dark: #212121;
-    --text-light: #FFFFFF;
-    --text-gray: #757575;
-    --border: #BDBDBD;
-    --danger: #F44336;
-    --warning: #FFC107;
-    --success: #4CAF50;
-    --info: #2196F3;
-    --shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    --border-radius: 4px;
-    --transition: all 0.3s ease;
-}
 
-/* Global Styles */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+:root {
+  --primary: #2E7D32;
+  --secondary: #4CAF50;
+  --light: #E8F5E9;
+  --dark: #1B5E20;
+  --accent: #FF9800;
+  --text-dark: #212121;
+  --text-light: #FFFFFF;
+  --text-gray: #757575;
+  --border: #BDBDBD;
+  --body-bg: #f8f9fa;
+  --white: #ffffff;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --border-radius: 4px;
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 3rem;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
 }
 
 body {
-    font-family: 'Roboto', Arial, sans-serif;
-    line-height: 1.6;
-    color: var(--text-dark);
-    background-color: #f5f5f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-dark);
+  line-height: 1.6;
+  background-color: var(--body-bg);
+  margin: 0;
+  padding: 0;
 }
 
 .main-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* Page Header */
-.page-header {
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid var(--primary);
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 15px;
 }
 
 .page-header h2 {
-    color: var(--primary);
-    font-size: 28px;
-    margin-bottom: 5px;
+  color: var(--primary);
+  margin-bottom: 10px;
+  font-size: 2rem;
 }
 
 .page-header p {
-    color: var(--text-gray);
-    font-size: 16px;
+  color: var(--text-gray);
+  font-size: 1.1rem;
+  margin: 0;
 }
 
 /* Info Box */
 .info-box {
-    background-color: var(--light);
-    border-left: 4px solid var(--primary);
-    padding: 15px;
-    margin-bottom: 25px;
-    border-radius: var(--border-radius);
+  background-color: var(--light);
+  border-left: 5px solid var(--secondary);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  margin-bottom: 25px;
 }
 
 .info-box p {
-    margin: 0;
-    color: var(--dark);
+  margin: 0;
+  color: var(--dark);
 }
 
 /* Alerts */
 .alert {
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: var(--border-radius);
-    font-weight: 500;
+  padding: 15px;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+  font-weight: 500;
 }
 
 .alert-danger {
-    background-color: #FFEBEE;
-    color: var(--danger);
-    border-left: 4px solid var(--danger);
+  background-color: #ffebee;
+  border-left: 5px solid var(--danger-color);
+  color: #c62828;
 }
 
 .alert-success {
-    background-color: #E8F5E9;
-    color: var(--success);
-    border-left: 4px solid var(--success);
+  background-color: var(--light);
+  border-left: 5px solid var(--success-color);
+  color: var(--dark);
 }
 
 /* Retribution Container */
 .retribusi-container {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 30px;
-    margin-bottom: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 30px;
 }
 
-@media (max-width: 900px) {
-    .retribusi-container {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Retribution List */
 .retribusi-list {
-    background: var(--text-light);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    padding: 20px;
+  flex: 1 1 60%;
+  min-width: 300px;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
 }
 
-.retribusi-list h2 {
-    color: var(--primary);
-    margin-bottom: 20px;
-    font-size: 24px;
+.payment-summary {
+  flex: 1 1 30%;
+  min-width: 280px;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  position: sticky;
+  top: 20px;
+  height: fit-content;
 }
 
-/* Retribution Filter */
+/* Headings */
+.retribusi-list h2,
+.payment-summary h2,
+.recent-payments h2 {
+  color: var(--primary);
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--light);
+}
+
+/* Filter Controls */
 .retribusi-filter {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 .retribusi-filter select {
-    padding: 10px;
-    border: 1px solid var(--border);
-    border-radius: var(--border-radius);
-    background-color: var(--text-light);
-    color: var(--text-dark);
-    width: 150px;
-    font-size: 14px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+  background-color: var(--white);
+  min-width: 150px;
 }
 
 .search-box {
-    display: flex;
+  display: flex;
+  max-width: 300px;
 }
 
 .search-box input {
-    padding: 10px;
-    border: 1px solid var(--border);
-    border-radius: var(--border-radius) 0 0 var(--border-radius);
-    width: 250px;
-    font-size: 14px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+  flex-grow: 1;
 }
 
 .search-box button {
-    padding: 10px 15px;
-    background-color: var(--primary);
-    color: var(--text-light);
-    border: none;
-    border-radius: 0 var(--border-radius) var(--border-radius) 0;
-    cursor: pointer;
-    transition: var(--transition);
+  padding: 10px 15px;
+  background-color: var(--secondary);
+  color: var(--text-light);
+  border: none;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .search-box button:hover {
-    background-color: var(--dark);
+  background-color: var(--primary);
 }
 
-/* Retribution Table */
-.retribusi-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+/* Table Styles */
+.retribusi-table,
+.payment-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
 .retribusi-table th,
-.retribusi-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+.payment-history-table th {
+  background-color: var(--light);
+  text-align: left;
+  padding: 12px 15px;
+  color: var(--primary);
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-.retribusi-table th {
-    background-color: var(--light);
-    color: var(--dark);
-    font-weight: 600;
-    position: sticky;
-    top: 0;
+.retribusi-table td,
+.payment-history-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
 }
 
-.retribusi-table tr:hover {
-    background-color: #f9f9f9;
+.retribusi-table tr:hover,
+.payment-history-table tr:hover {
+  background-color: var(--light);
 }
 
-.retribusi-table .text-center {
-    text-align: center;
+.retribusi-table tr:last-child td,
+.payment-history-table tr:last-child td {
+  border-bottom: none;
 }
 
-/* Retribution Checkbox */
-.retribusi-checkbox {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    accent-color: var(--primary);
+.text-center {
+  text-align: center;
 }
 
 /* Status Tags */
 .tag {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
-    text-transform: uppercase;
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .tag-bulanan {
-    background-color: #E3F2FD;
-    color: #1976D2;
+  background-color: #d1ecf1;
+  color: #0c5460;
 }
 
 .tag-tahunan {
-    background-color: #E8F5E9;
-    color: #388E3C;
+  background-color: #d4edda;
+  color: #155724;
 }
 
 .tag-insidentil {
-    background-color: #FFF3E0;
-    color: #E64A19;
+  background-color: #fff3cd;
+  color: #856404;
 }
 
 .status-belum {
-    background-color: #E0E0E0;
-    color: #616161;
+  background-color: #e2e3e5;
+  color: #383d41;
 }
 
 .status-proses {
-    background-color: #E3F2FD;
-    color: #1976D2;
+  background-color: #cce5ff;
+  color: #004085;
 }
 
 .status-lunas {
-    background-color: #E8F5E9;
-    color: #388E3C;
+  background-color: #d4edda;
+  color: #155724;
 }
 
 .status-jatuh-tempo {
-    background-color: #FFEBEE;
-    color: #D32F2F;
+  background-color: #f8d7da;
+  color: #721c24;
 }
 
-/* Action Buttons */
-.action-btn {
-    background-color: var(--primary);
-    color: var(--text-light);
-    border: none;
-    border-radius: var(--border-radius);
-    padding: 6px 12px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.action-btn:hover {
-    background-color: var(--dark);
-}
-
-.action-btn:disabled {
-    background-color: #9E9E9E;
-    cursor: not-allowed;
-}
-
-.view-progress-btn {
-    display: inline-block;
-    background-color: var(--accent);
-    color: var(--text-light);
-    border: none;
-    border-radius: var(--border-radius);
-    padding: 6px 12px;
-    font-size: 13px;
-    text-decoration: none;
-    margin-left: 5px;
-    transition: var(--transition);
-}
-
-.view-progress-btn:hover {
-    background-color: #F57C00;
+/* Checkboxes */
+.retribusi-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
 }
 
 /* Pagination */
 .pagination {
-    display: flex;
-    list-style: none;
-    justify-content: center;
-    margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 20px 0;
+  list-style: none;
 }
 
 .pagination li {
-    margin: 0 5px;
+  margin: 0 3px;
 }
 
-.pagination a {
-    display: block;
-    padding: 8px 12px;
-    text-decoration: none;
-    color: var(--text-dark);
-    border: 1px solid var(--border);
-    border-radius: var(--border-radius);
-    transition: var(--transition);
+.pagination li a {
+  display: block;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+  color: var(--primary);
+  text-decoration: none;
+  transition: all 0.2s;
 }
 
-.pagination a:hover {
-    background-color: var(--light);
+.pagination li a:hover {
+  background-color: var(--light);
 }
 
-.pagination .active a {
-    background-color: var(--primary);
-    color: var(--text-light);
-    border-color: var(--primary);
+.pagination li.active a {
+  background-color: var(--secondary);
+  color: var(--text-light);
+  border-color: var(--secondary);
+}
+
+/* Action Buttons */
+.action-btn {
+  background-color: var(--secondary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+/* Fix for button alignment in table cells */
+.retribusi-table td:last-child {
+  white-space: nowrap;
+}
+
+.action-btn:hover {
+  background-color: var(--dark);
+}
+
+.action-btn:disabled {
+  background-color: var(--text-gray);
+  cursor: not-allowed;
+}
+
+.view-progress-btn {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  margin-left: 5px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.view-progress-btn:hover {
+  background-color: var(--dark);
+}
+
+.view-btn {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.view-btn:hover {
+  background-color: var(--dark);
 }
 
 /* Payment Summary */
-.payment-summary {
-    background: var(--text-light);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    padding: 20px;
-    position: sticky;
-    top: 20px;
-}
-
-.payment-summary h2 {
-    color: var(--primary);
-    margin-bottom: 20px;
-    font-size: 24px;
-}
-
 .summary-items {
-    margin-bottom: 20px;
-}
-
-.empty-state {
-    text-align: center;
-    color: var(--text-gray);
-    padding: 30px 0;
-    font-style: italic;
+  margin-bottom: 20px;
 }
 
 .summary-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px dashed var(--border);
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--light);
 }
 
 .summary-item:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .summary-label {
-    color: var(--text-dark);
+  color: var(--text-gray);
 }
 
 .summary-value {
-    font-weight: 500;
+  font-weight: 500;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--text-gray);
+  padding: 20px 0;
+  font-style: italic;
 }
 
 .total-amount {
-    background-color: var(--light);
-    padding: 15px;
-    border-radius: var(--border-radius);
-    margin-bottom: 20px;
+  background-color: var(--light);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
 }
 
 .total-amount .summary-item {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
+  border-bottom: none;
 }
 
 .total-amount .summary-label {
-    font-weight: 600;
+  font-weight: bold;
+  color: var(--primary);
 }
 
 .total-amount .summary-value {
-    font-weight: 700;
-    color: var(--primary);
-    font-size: 18px;
+  font-weight: bold;
+  color: var(--primary);
+  font-size: 1.1rem;
 }
 
 /* Payment Options */
 .payment-options {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .payment-options h3 {
-    color: var(--text-dark);
-    margin-bottom: 15px;
-    font-size: 18px;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: var(--primary);
 }
 
 .payment-method {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid var(--border);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: var(--transition);
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s;
 }
 
 .payment-method:hover {
-    border-color: var(--primary);
-    background-color: var(--light);
+  border-color: var(--secondary);
 }
 
 .payment-method input[type="radio"] {
-    margin-right: 10px;
-    accent-color: var(--primary);
+  margin-right: 10px;
 }
 
 .payment-method label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
 }
 
 .payment-method img {
-    height: 24px;
+  height: 25px;
+  object-fit: contain;
 }
 
 /* Pay Button */
 .pay-btn {
-    width: 100%;
-    padding: 12px;
-    background-color: var(--primary);
-    color: var(--text-light);
-    border: none;
-    border-radius: var(--border-radius);
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
+  background-color: var(--success-color);
+  color: var(--text-light);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 12px 15px;
+  font-size: 1rem;
+  font-weight: 500;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .pay-btn:hover {
-    background-color: var(--dark);
+  background-color: var(--primary);
 }
 
 .pay-btn:disabled {
-    background-color: #9E9E9E;
-    cursor: not-allowed;
+  background-color: var(--border);
+  cursor: not-allowed;
 }
 
 /* Recent Payments */
 .recent-payments {
-    background: var(--text-light);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    padding: 20px;
-    margin-bottom: 40px;
-}
-
-.recent-payments h2 {
-    color: var(--primary);
-    margin-bottom: 20px;
-    font-size: 24px;
-}
-
-/* Payment History Table */
-.payment-history-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-.payment-history-table th,
-.payment-history-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.payment-history-table th {
-    background-color: var(--light);
-    color: var(--dark);
-    font-weight: 600;
-}
-
-.payment-history-table tr:hover {
-    background-color: #f9f9f9;
-}
-
-.view-btn {
-    display: inline-block;
-    background-color: var(--secondary);
-    color: var(--text-light);
-    border: none;
-    border-radius: var(--border-radius);
-    padding: 6px 12px;
-    font-size: 13px;
-    text-decoration: none;
-    transition: var(--transition);
-}
-
-.view-btn:hover {
-    background-color: var(--primary);
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 30px;
 }
 
 .view-all-link {
-    text-align: center;
-    margin-top: 20px;
+  text-align: right;
+  margin-top: 15px;
 }
 
 .view-all-link a {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 500;
-    transition: var(--transition);
+  color: var(--secondary);
+  text-decoration: none;
+  font-weight: 500;
 }
 
 .view-all-link a:hover {
-    color: var(--dark);
-    text-decoration: underline;
+  text-decoration: underline;
+  color: var(--primary);
 }
 
 /* Modal Styles */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    overflow: auto;
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: auto;
 }
 
 .modal-content {
-    background-color: var(--text-light);
-    margin: 10% auto;
-    padding: 25px;
-    border-radius: var(--border-radius);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    width: 500px;
-    max-width: 90%;
-    position: relative;
+  background-color: white;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: var(--border-radius);
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
 }
 
 .close {
-    position: absolute;
-    right: 15px;
-    top: 10px;
-    font-size: 28px;
-    font-weight: bold;
-    color: var(--text-gray);
-    cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  color: var(--text-gray);
+  font-size: 1.8rem;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .close:hover {
-    color: var(--text-dark);
+  color: var(--text-dark);
 }
 
 .modal-title {
-    color: var(--primary);
-    margin-bottom: 15px;
-    font-size: 22px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: var(--primary);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--light);
 }
 
 .modal-body {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
+  text-align: right;
+  padding-top: 15px;
+  border-top: 1px solid var(--light);
 }
 
 .btn-secondary {
-    padding: 10px 20px;
-    background-color: #9E9E9E;
-    color: var(--text-light);
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: var(--transition);
+  background-color: var(--text-gray);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 10px 15px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .btn-secondary:hover {
-    background-color: #757575;
+  background-color: #6c757d;
 }
 
-/* Responsive Styles */
+/* Payment Status Timeline */
+#status-timeline {
+  position: relative;
+  padding: 20px 0;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 20px;
+}
+
+.timeline-item:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 2px;
+  background-color: var(--border);
+}
+
+.timeline-item:last-child:before {
+  height: 50%;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -8px;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid;
+}
+
+.timeline-dot.complete {
+  background-color: var(--success-color);
+  border-color: var(--success-color);
+}
+
+.timeline-dot.active {
+  background-color: var(--white);
+  border-color: var(--warning-color);
+}
+
+.timeline-dot.incomplete {
+  background-color: var(--white);
+  border-color: var(--border);
+}
+
+.timeline-content {
+  margin-bottom: 5px;
+}
+
+.timeline-title {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.timeline-date {
+  color: var(--text-gray);
+  font-size: 0.9rem;
+}
+
+/* Responsive Adjustments */
 @media (max-width: 768px) {
-    .retribusi-filter {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
-    }
-    
-    .retribusi-filter select {
-        width: 100%;
-    }
-    
-    .search-box {
-        width: 100%;
-    }
-    
-    .search-box input {
-        width: calc(100% - 80px);
-    }
-    
-    .retribusi-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .modal-content {
-        width: 95%;
-        margin: 5% auto;
-    }
+  .retribusi-container {
+    flex-direction: column;
+  }
+  
+  .retribusi-filter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-box {
+    max-width: 100%;
+  }
+  
+  .payment-summary {
+    position: static;
+  }
+  
+  .modal-content {
+    width: 90%;
+  }
 }
 </style>
 

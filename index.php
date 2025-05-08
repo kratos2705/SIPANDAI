@@ -268,7 +268,7 @@ include 'includes/header.php';
                             <div class="berita-content">
                                 <h4><?= htmlspecialchars($berita['judul']) ?></h4>
                                 <p><?= htmlspecialchars($berita['konten_singkat']) ?>... </p>
-                                <a href="detail-berita.php?id=<?= $berita['berita_id'] ?>" class="btn btn-outline">Selengkapnya</a>
+                                <a href="../user/detail-berita.php?id=<?= $berita['berita_id'] ?>" class="btn btn-outline">Selengkapnya</a>
                                 <div class="berita-meta">
                                     <span><i class="fas fa-calendar"></i> <?= $berita['tanggal_format'] ?></span>
                                     <span><i class="fas fa-tag"></i> <?= htmlspecialchars($berita['kategori']) ?></span>
